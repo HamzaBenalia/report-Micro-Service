@@ -27,7 +27,12 @@ public class ReportService {
         this.noteClient = noteClient;
     }
 
-
+    /**
+     * This method will generate a report based on elements like age sex etc...
+     * @param patientId
+     * @return
+     * @throws PatientNotFoundException
+     */
     public Report generateReports(String patientId) throws PatientNotFoundException {
         if (patientId == null || patientId.isEmpty()) {
             throw new PatientNotFoundException("Patient with given ID was not found");
@@ -66,7 +71,14 @@ public class ReportService {
                 patient.getDateDeNaissance(), age, risk, triggersList);
     }
 
-
+    /**
+     * This method is for culculating the risks based on different factors
+     * @param numberOfTriggers
+     * @param patientAge
+     * @param patientGender
+     * @return
+     * @throws IllegalArgumentException
+     */
     public Risk calculateRisk(int numberOfTriggers, int patientAge, String patientGender) throws IllegalArgumentException {
         if (numberOfTriggers < 0 || patientAge < 0 || patientGender == null) {
             throw new IllegalArgumentException("Invalid input");
@@ -106,7 +118,11 @@ public class ReportService {
         return Risk.NONE;
     }
 
-
+    /**
+     * This method is for loading the triggers that will help generate a report above
+     * @param notes
+     * @return
+     */
     public List<String> loadTriggersFromPatientNotes(List<Note> notes) {
         Triggers triggers = new Triggers();
         List<String> triggerList = triggers.triggerList();
@@ -123,12 +139,15 @@ public class ReportService {
         return foundTriggers;
     }
 
+    /**
+     * This methode is for culculating an age of a patient
+     * @param birthDate
+     * @return
+     */
      private Integer calculatePatientAge(String birthDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate birth = LocalDate.parse(birthDate, formatter);
-
         Period age = Period.between(birth, LocalDate.now());
-
         return age.getYears();
     }
 }

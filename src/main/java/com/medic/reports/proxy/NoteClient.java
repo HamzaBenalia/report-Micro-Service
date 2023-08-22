@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-@FeignClient(name = "note", url = "http://localhost:9090")
+@FeignClient(name = "note", url = "${note.url}")
 
 public interface NoteClient {
 
